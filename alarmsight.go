@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
+	"github.com/slack-go/slack"
 )
 
 type CLI struct {
@@ -82,7 +83,7 @@ func (c *CLI) process(ctx context.Context, payload Payload) error {
 		slog.Info("result", "record", line)
 	}
 
-	return c.postToSlack(ctx, results)
+	return c.postToSlack(ctx, *queryDef.Name, results)
 }
 
 // parsePayload parses the payload of a CloudWatch alarm and returns the name and state.
@@ -167,9 +168,18 @@ WAITER:
 	return results, nil
 }
 
-func (c *CLI) postToSlack(ctx context.Context, results []string) error {
-	// TODO
-	return nil
+func (c *CLI) postToSlack(ctx context.Context, queryName string, results []string) error {
+	client := slack.New(c.SlackToken)
+	body := strings.Join(results, "\n")
+	filename := fmt.Sprintf("results-of-%s.txt", queryName)
+	slog.Info("posting to slack", "channel", c.SlackChannel, "filename", filename, "size", len(body))
+	_, err := client.UploadFileV2Context(ctx, slack.UploadFileV2Parameters{
+		Channel:  c.SlackChannel,
+		Filename: filename,
+		Content:  body,
+		FileSize: len(body),
+	})
+	return fmt.Errorf("failed to upload file to slack %w", err)
 }
 
 /*
