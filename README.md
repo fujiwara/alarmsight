@@ -1,15 +1,15 @@
-# {{ .Project.Name }}
+# alarmsight
 
-{{ .Project.Description }}
+alarmsight is a lambda function that queries the CloudWatch Insights API for logs and sends it to a Slack channel. It is intended to be used as a CloudWatch Alarm action.
 
 ## Usage
 
-alarmsight
+TODO:
 
 ## LICENSE
 
-{{ .Project.License }}
+MIT
 
 ## Author
 
-{{ .Project.Author.Name }} <{{ .Project.Author.Email }}>
+Copyright (c) 2024 FUJIWARA Shunichiro
