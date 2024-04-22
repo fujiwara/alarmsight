@@ -2,18 +2,12 @@ package main
 
 import (
 	"context"
-	"log"
 
-	app "github.com/fujiwara/alarmsight"
+	"github.com/fujiwara/alarmsight"
+	"github.com/fujiwara/lamblocal"
 )
 
 func main() {
-	ctx := context.TODO()
-	if err := run(ctx); err != nil {
-		log.Fatal(err)
-	}
-}
-
-func run(ctx context.Context) error {
-	return app.Run(ctx)
+	app := alarmsight.NewCLI()
+	lamblocal.Run(context.Background(), app.Handler)
 }
