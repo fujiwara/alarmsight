@@ -31,6 +31,45 @@ For example, if you set `SSM_PATH` to `/alarmsight/`, alarmsight loads the follo
 - `/alarmsight/QUERY_DURATION`
 - `/alarmsight/QUERY_NAME_PREFIX`
 
+### IAM Policy
+
+alarmsight requires the following IAM policy.
+Attach a IAM role having the policy to the lambda function.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:CreateLogGroup",
+        "logs:PutLogEvents",
+        "logs:GetQueryResults",
+        "logs:StartQuery",
+        "logs:DescribeQueryDefinitions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+
+### Lambda permission
+
+alarmsight requires the following permission to be invoked by CloudWatch Alarm.
+
+```console
+$ aws lambda add-permission --function-name alarmsight \
+    --action lambda:InvokeFunction --statement-id cw-alarm \
+    --principal lambda.alarms.cloudwatch.amazonaws.com
+```
+
+`--function-name` and `--statement-id` are your lambda function name and the statement ID, respectively.
+
 ### Runtime
 
 `provided.al2` or `provided.al2023` is supported.
@@ -40,6 +79,44 @@ alarmsight is written in Go. The release binary works as a lambda function's `bo
 You can rename the binary to `bootstrap` and create a zip file with the `bootstrap` file.
 
 See also [examples](./examples) directory. The directory contains a sample `function.jsonnet` file for [lambroll](https://github.com/fujiwara/lambroll) to deploy a lambda function.
+
+### Debugging
+
+alarmsight also can be run as a command-line tool.
+
+This is useful for debugging the lambda function locally.
+
+```
+Usage: alarmsight --slack-token=STRING --slack-channel=STRING [flags]
+
+Flags:
+  -h, --help                    Show context-sensitive help.
+      --slack-token=STRING      Slack token ($SLACK_TOKEN)
+      --slack-channel=STRING    Slack Channel ID ($SLACK_CHANNEL)
+      --query-duration=10m      Duration of query ($QUERY_DURATION)
+      --query-name-prefix="alarmsight_"
+                                ($QUERY_NAME_PREFIX)
+      --skip-post               Skip post to slack ($SKIP_POST)
+```
+
+When you run alarmsight as a command-line tool, a payload is read from the standard input.
+
+A minimal payload is as follows:
+
+```json
+{
+  "alarmData": {
+    "alarmName": "lambda-demo-metric-alarm",
+    "state": {
+      "value": "ALARM"
+    }
+  }
+}
+```
+
+- `.alarmData.alarmName`: The name of the alarm that triggered the lambda function.
+- `.alarmData.state.value`: The state of the alarm. It is either `ALARM` or `OK`.
+   alarmsight queries logs only when the state is `ALARM`.
 
 ## LICENSE
 
