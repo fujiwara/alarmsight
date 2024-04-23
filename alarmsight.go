@@ -22,11 +22,17 @@ type CLI struct {
 	SlackChannel    string        `env:"SLACK_CHANNEL" help:"Slack Channel ID" required:"true"`
 	QueryDuration   time.Duration `env:"QUERY_DURATION" help:"Duration of query"  default:"10m"`
 	QueryNamePrefix string        `env:"QUERY_NAME_PREFIX" default:"alarmsight_"`
+	SkipPost        bool          `env:"SKIP_POST" help:"Skip post to slack"`
+	LogJSON         bool          `env:"LOG_JSON" help:"Log in JSON format"`
 }
 
 func NewCLI() *CLI {
 	app := &CLI{}
 	kong.Parse(app)
+	if app.LogJSON {
+		logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+		slog.SetDefault(logger)
+	}
 	return app
 }
 
@@ -82,7 +88,10 @@ func (c *CLI) process(ctx context.Context, payload Payload) error {
 	for _, line := range results {
 		slog.Info("result", "record", line)
 	}
-
+	if c.SkipPost {
+		slog.Info("skip post to slack", "alarm_name", alarmName)
+		return nil
+	}
 	return c.postToSlack(ctx, *queryDef.Name, results)
 }
 
@@ -90,10 +99,10 @@ func (c *CLI) process(ctx context.Context, payload Payload) error {
 func ParsePayload(p Payload) (string, string, error) {
 	r, err := arn.Parse(p.AlarmArn)
 	if err != nil {
-		return "", "", fmt.Errorf("failed to parse resource ARN %s %w", p.AlarmArn, err)
+		slog.Warn(fmt.Sprintf("failed to parse resource ARN %s %s", p.AlarmArn, err))
 	}
 	if r.Service != "cloudwatch" || !strings.HasPrefix(r.Resource, "alarm:") {
-		return "", "", fmt.Errorf("unexpected resource ARN %s", p.AlarmArn)
+		slog.Warn(fmt.Sprintf("unexpected resource ARN %s", p.AlarmArn))
 	}
 	if p.AlarmData.AlarmName == "" {
 		return "", "", fmt.Errorf("alarm name is empty")
