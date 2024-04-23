@@ -171,7 +171,8 @@ WAITER:
 func (c *CLI) postToSlack(ctx context.Context, queryName string, results []string) error {
 	client := slack.New(c.SlackToken)
 	body := strings.Join(results, "\n")
-	filename := fmt.Sprintf("results-of-%s.txt", queryName)
+	now := time.Now().Format("20060102-150405")
+	filename := fmt.Sprintf("%s-%s.txt", queryName, now)
 	slog.Info("posting to slack", "channel", c.SlackChannel, "filename", filename, "size", len(body))
 	_, err := client.UploadFileV2Context(ctx, slack.UploadFileV2Parameters{
 		Channel:  c.SlackChannel,
