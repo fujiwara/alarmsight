@@ -1,4 +1,4 @@
-name: tagpr
+name: tagpr and release
 on:
   push:
     branches: ["main"]
