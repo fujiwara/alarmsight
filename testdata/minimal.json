@@ -1,0 +1,8 @@
+{
+  "alarmData": {
+    "alarmName": "test_alarm",
+    "state": {
+      "value": "ALARM"
+    }
+  }
+}
