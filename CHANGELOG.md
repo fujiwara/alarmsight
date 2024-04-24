@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.3](https://github.com/fujiwara/alarmsight/compare/v0.0.2...v0.0.3) - 2024-04-24
+- add examples by @fujiwara in https://github.com/fujiwara/alarmsight/pull/6
+
 ## [v0.0.1](https://github.com/fujiwara/alarmsight/compare/v0.0.0...v0.0.1) - 2024-04-23
 
 ## [v0.0.0](https://github.com/fujiwara/alarmsight/commits/v0.0.0) - 2024-04-23
