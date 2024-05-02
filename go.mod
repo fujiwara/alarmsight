@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.26.1
 	github.com/aws/aws-sdk-go-v2/config v1.27.11
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.35.1
-	github.com/fujiwara/lamblocal v0.0.3
+	github.com/fujiwara/lamblocal v0.0.4
 	github.com/handlename/ssmwrap v1.2.1
 	github.com/slack-go/slack v0.12.5
 )

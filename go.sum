@@ -41,8 +41,8 @@ github.com/aws/smithy-go v1.20.2/go.mod h1:krry+ya/rV9RDcV/Q16kpu6ypI4K2czasz0NC
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/fujiwara/lamblocal v0.0.3 h1:hFeLafSFbZrv5MqLlGJNJddhGlpdn0Nc8KJvg/7oj8w=
-github.com/fujiwara/lamblocal v0.0.3/go.mod h1:D1u13t8PSyXysDOH8pmft4jOtyvWbDNVcGTGuLvjfBY=
+github.com/fujiwara/lamblocal v0.0.4 h1:ZfTQ1JgXtjjRdEGTckmazSUqYPVFGGxPj9EhNjcx9xQ=
+github.com/fujiwara/lamblocal v0.0.4/go.mod h1:D1u13t8PSyXysDOH8pmft4jOtyvWbDNVcGTGuLvjfBY=
 github.com/go-test/deep v1.0.4 h1:u2CU3YKy9I2pmu9pX0eq50wCgjfGIt539SqR7FbHiho=
 github.com/go-test/deep v1.0.4/go.mod h1:wGDj63lr65AM2AQyKZd/NYHGb0R+1RLqB8NKt3aSFNA=
 github.com/google/go-cmp v0.5.7 h1:81/ik6ipDQS2aGcBfIN5dHDB36BwrStyeAQquSYCV4o=
